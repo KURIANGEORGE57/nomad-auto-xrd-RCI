@@ -4,6 +4,26 @@ Nomad example template
 
 This `nomad` plugin was generated with `Cookiecutter` along with `@nomad`'s [`cookiecutter-nomad-plugin`](https://github.com/FAIRmat-NFDI/cookiecutter-nomad-plugin) template.
 
+## Features
+
+### ARCO (Arcogram with Rational Coherence Index)
+
+This plugin includes **ARCO**, an advanced algorithm for analyzing periodicity in XRD diffraction patterns. ARCO converts 1-D intensity profiles into interpretable fingerprints by integrating spectral power around rational frequency anchors.
+
+**Key features:**
+- **RCI (Rational Coherence Index)**: Scalar metric (0-1) quantifying periodic structure strength
+- **ARCO-print**: Fixed-length feature vector for ML applications and similarity search
+- **ARCO-3D**: Position-resolved arcogram for localizing structural changes
+- **Top Rationals**: Interpretable frequency components corresponding to lattice periodicities
+
+**Applications:**
+- Phase identification via similarity-based retrieval
+- Quality control and crystallinity assessment
+- Structure optimization in inverse design
+- Peak spacing analysis for characteristic periodicities
+
+See the [ARCO Documentation](#arco-documentation) section below for detailed usage instructions.
+
 
 ## Development
 
@@ -176,3 +196,220 @@ To run the check for updates locally, follow the instructions on [`cruft` websit
 | Name | E-mail     |
 |------|------------|
 | Pepe Márquez | [jose.marquez@physik.hu-berlin.de](mailto:jose.marquez@physik.hu-berlin.de)
+
+
+## ARCO Documentation
+
+### Overview
+
+ARCO (Arcogram with Rational Coherence Index) is a signal processing algorithm that analyzes periodicity in XRD patterns by computing spectral power around **rational frequency anchors** (e.g., 1/2, 1/3, 1/7, etc.). These rationals correspond to small-integer periodicities commonly found in crystalline materials.
+
+### Quick Start
+
+```python
+from nomad_auto_xrd.lib import compute_arco_features
+
+# Compute ARCO features from XRD pattern
+features = compute_arco_features(
+    two_theta=two_theta_array,
+    intensity=intensity_array,
+    Qmax=40,           # Max denominator for rational anchors
+    alpha=0.5,         # Bandwidth scale factor
+    major_q=20         # Threshold for "major" rationals
+)
+
+print(f"RCI (periodicity score): {features['rci']:.4f}")
+print(f"ARCO fingerprint dimension: {len(features['arco_print'])}")
+print(f"Top rational frequencies: {features['top_rationals'][:3]}")
+```
+
+### Key Outputs
+
+| Output | Type | Description |
+|--------|------|-------------|
+| **RCI** | float | Rational Coherence Index (0-1). Higher = stronger periodicity |
+| **arco_print** | array | Fixed-length feature vector for ML/similarity |
+| **top_rationals** | list | Top-k dominant rational frequencies |
+| **arco_3d** | array | Position-resolved periodicity map |
+
+### Parameter Guidelines for XRD
+
+| Parameter | Recommended | Description |
+|-----------|-------------|-------------|
+| `Qmax` | 30-60 | Maximum denominator for rational anchors. Higher captures longer periodicities |
+| `window_sizes` | [128, 256] | Sliding window sizes for multi-scale analysis |
+| `alpha` | 0.3-1.0 | Bandwidth scale (δ = α/q²). Lower = narrower frequency bands |
+| `major_q` | 10-20 | Denominator threshold for RCI computation |
+
+### Integration with XRD Analysis
+
+To compute ARCO features during analysis:
+
+```python
+from nomad_auto_xrd.common.arco_integration import attach_arco_to_result
+
+# After running XRD analysis
+result = analyzer.eval(analysis_inputs)
+
+# Attach ARCO features
+result = attach_arco_to_result(
+    result,
+    analysis_inputs,
+    enable_arco=True,
+    Qmax=40,
+    alpha=0.5
+)
+
+# Access ARCO results
+for idx, arco in enumerate(result.arco_features):
+    print(f"Pattern {idx}: RCI = {arco['rci']:.4f}")
+```
+
+### Rational Frequency Interpretation
+
+Common rational frequencies and their physical meanings:
+
+| Rational | Frequency | Period | Physical Interpretation |
+|----------|-----------|--------|------------------------|
+| 1/2 | 0.500 | 2 | Alternating pattern / β-strand-like |
+| 1/3 | 0.333 | 3 | Collagen-like repeat |
+| 1/4 | 0.250 | 4 | Quarter repeats |
+| 1/7 | 0.143 | 7 | Heptad repeat / coiled-coil |
+| 1/10 | 0.100 | 10 | Long-range periodicity |
+| 5/18 | 0.278 | ~3.6 | α-helix-like (protein analogy) |
+
+### Demo Notebook
+
+See `notebooks/arco_xrd_demo.ipynb` for a comprehensive demonstration including:
+- Generating rational anchors
+- Analyzing synthetic XRD patterns (uniform vs random peaks)
+- Computing RCI and ARCO-prints
+- Visualizing arc power spectra
+- Multi-track analysis (intensity + derivative)
+- Position-resolved ARCO-3D heatmaps
+- Statistical validation with z-scores
+
+### Advanced Usage
+
+#### Multi-track Analysis
+
+Use both intensity and derivative tracks for richer features:
+
+```python
+from nomad_auto_xrd.lib import XRDArcoAnalyzer
+
+analyzer = XRDArcoAnalyzer(
+    Qmax=40,
+    window_sizes=[128, 256],
+    alpha=0.5,
+    use_derivative=True  # Include derivative track
+)
+
+result = analyzer.analyze_pattern(two_theta, intensity)
+```
+
+#### Similarity Computation
+
+Compare ARCO fingerprints for pattern matching:
+
+```python
+from nomad_auto_xrd.lib import XRDArcoAnalyzer
+
+analyzer = XRDArcoAnalyzer()
+
+# Compute fingerprints
+result1 = analyzer.analyze_pattern(two_theta1, intensity1)
+result2 = analyzer.analyze_pattern(two_theta2, intensity2)
+
+# Compute similarity (L1 distance, lower = more similar)
+similarity = analyzer.compute_similarity(
+    result1['arco_print'],
+    result2['arco_print']
+)
+
+print(f"L1 distance: {similarity:.4f}")
+```
+
+#### Statistical Validation
+
+Test significance against null model:
+
+```python
+from nomad_auto_xrd.lib import ARCO, generate_anchors
+
+anchors = generate_anchors(Qmax=40)
+arco = ARCO(anchors, window_sizes=[128])
+
+# Compute z-score vs shuffled null
+zscore = arco.null_model_zscore(
+    intensity,
+    n_shuffles=50,
+    preserve_composition=True
+)
+
+print(f"Z-score: {zscore:.2f}")
+if zscore > 3:
+    print("Highly significant periodicity (z > 3)")
+```
+
+### Testing
+
+Run ARCO-specific tests:
+
+```bash
+# Install test dependencies
+pip install numpy pytest
+
+# Run ARCO unit tests
+PYTHONPATH=src python -m pytest tests/test_arco.py -v
+
+# Run specific test categories
+pytest tests/test_arco.py::TestSinePattern -v
+pytest tests/test_arco.py::TestXRDIntegration -v
+```
+
+### API Reference
+
+#### `generate_anchors(Qmax: int) -> List[float]`
+Generate rational frequency anchors up to denominator Qmax.
+
+#### `XRDArcoAnalyzer`
+High-level interface for XRD pattern analysis.
+- `__init__(Qmax, window_sizes, alpha, major_q, use_derivative)`
+- `analyze_pattern(two_theta, intensity) -> Dict`
+- `compute_similarity(arco_print1, arco_print2) -> float`
+
+#### `ARCO`
+Core ARCO algorithm implementation.
+- `compute_rci(tracks, major_q) -> float`
+- `compute_arco_print(tracks) -> ndarray`
+- `compute_arco_3d(tracks, finest_window) -> ndarray`
+- `compute_track_arcs(track_signal, window_size) -> ndarray`
+- `null_model_zscore(track, n_shuffles) -> float`
+
+#### `compute_arco_features(two_theta, intensity, ...) -> Dict`
+Convenience function for one-shot ARCO analysis.
+
+### Performance
+
+- **Computation time**: ~50-200ms per pattern (2048 points, Qmax=40, 2 window sizes)
+- **Memory**: ARCO-print dimensions = n_tracks × n_window_sizes × n_anchors
+  - Example: 2 tracks × 2 windows × 140 anchors = 560 dimensions
+- **Parallelization**: Vectorized with NumPy; GPU acceleration possible via PyTorch
+
+### Citation
+
+If you use ARCO in your research, please cite:
+
+```
+ARCO (Arcogram with Rational Coherence Index)
+Implementation in nomad-auto-xrd plugin
+https://github.com/FAIRmat-NFDI/nomad-auto-xrd
+```
+
+### References
+
+- Rational (Diophantine) pooling provides semantically meaningful frequency decomposition
+- Gaussian weighting around rational anchors with bandwidth δ = α/q²
+- RCI measures fraction of spectral energy in low-denominator rationals
+- Applications to protein sequences, ECG analysis, and now XRD patterns

@@ -140,6 +140,8 @@ class AnalysisResult:
         xrd_results_m_proxies (list | None): M-proxies for the `data.results`
             section of XRD entries, if available.
         plot_paths (list | None): Paths to the generated plots, if any.
+        arco_features (list[dict] | None): ARCO analysis features (RCI, fingerprints, etc.)
+            for each pattern, if computed.
     """
 
     filenames: list
@@ -151,6 +153,7 @@ class AnalysisResult:
     phases_m_proxies: list[list] | None = None
     xrd_results_m_proxies: list | None = None
     plot_paths: list | None = None
+    arco_features: list[dict] | None = None
 
     def to_dict(self):
         return {
@@ -171,6 +174,9 @@ class AnalysisResult:
                 else []
             ),
             'plot_paths': self.plot_paths if self.plot_paths is not None else [],
+            'arco_features': (
+                self.arco_features if self.arco_features is not None else []
+            ),
         }
 
     @classmethod
@@ -191,6 +197,9 @@ class AnalysisResult:
             if 'xrd_results_m_proxies' in data
             else None,
             plot_paths=list(data['plot_paths']) if 'plot_paths' in data else None,
+            arco_features=list(data['arco_features'])
+            if 'arco_features' in data
+            else None,
         )
 
     def merge(self, other):
@@ -222,6 +231,11 @@ class AnalysisResult:
             if self.plot_paths is None:
                 self.plot_paths = []
             self.plot_paths.extend(other.plot_paths)
+
+        if other.arco_features:
+            if self.arco_features is None:
+                self.arco_features = []
+            self.arco_features.extend(other.arco_features)
 
 
 @dataclass
