@@ -133,3 +133,67 @@ def fixture_clean_up():
                     shutil.rmtree(file_path)
             except Exception as e:
                 print(f'Warning: Failed to clean up {file_path}: {e}')
+
+
+# ============================================================================
+# ARCO-specific test configuration
+# ============================================================================
+
+
+def pytest_configure(config):
+    """
+    Configure pytest with custom markers and behavior for ARCO tests.
+    """
+    # Add ARCO-specific markers
+    config.addinivalue_line(
+        'markers', 'smoke: Fast smoke tests that run on every commit (~30s)'
+    )
+    config.addinivalue_line(
+        'markers', 'slow: Slower integration tests (~5min)'
+    )
+    config.addinivalue_line(
+        'markers', 'pipeline: Heavy pipeline tests requiring full dependencies'
+    )
+    config.addinivalue_line('markers', 'arco: ARCO-specific tests')
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    Modify test collection based on environment variables.
+
+    - If RUN_PIPELINE_TESTS is not set, skip pipeline tests
+    - If RUN_SMOKE_ONLY is set, only run smoke tests
+    """
+    import os
+
+    run_pipeline = os.getenv('RUN_PIPELINE_TESTS', '').lower() in ('true', '1', 'yes')
+    run_smoke_only = os.getenv('RUN_SMOKE_ONLY', '').lower() in ('true', '1', 'yes')
+
+    skip_pipeline = pytest.mark.skip(reason='RUN_PIPELINE_TESTS not set')
+    skip_non_smoke = pytest.mark.skip(reason='RUN_SMOKE_ONLY is set, skipping non-smoke tests')
+
+    for item in items:
+        # Skip pipeline tests unless explicitly enabled
+        if 'pipeline' in item.keywords and not run_pipeline:
+            item.add_marker(skip_pipeline)
+
+        # If smoke-only mode, skip non-smoke tests
+        if run_smoke_only and 'smoke' not in item.keywords:
+            item.add_marker(skip_non_smoke)
+
+
+@pytest.fixture(scope='session')
+def arco_test_data():
+    """
+    Fixture providing common test data for ARCO tests.
+    """
+    import numpy as np
+
+    np.random.seed(42)
+
+    return {
+        'periodic_signal': np.sin(2 * np.pi * 0.1 * np.arange(1024)),
+        'noise_signal': np.random.randn(1024),
+        'heptad_pattern': np.tile([1, 0, 0, 2, 0, 0, 1], 146),  # ~1024 points
+        'two_theta': np.linspace(10, 80, 512),
+    }

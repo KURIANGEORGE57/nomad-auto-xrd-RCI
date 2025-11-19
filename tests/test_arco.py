@@ -23,6 +23,8 @@ from nomad_auto_xrd.lib.arco_rci import (
 )
 
 
+@pytest.mark.smoke
+@pytest.mark.arco
 class TestAnchorGeneration:
     """Test rational anchor generation."""
 
@@ -52,9 +54,11 @@ class TestAnchorGeneration:
         assert 30 < len(anchors) < 60
 
 
+@pytest.mark.arco
 class TestSinePattern:
     """Test ARCO on synthetic sine waves."""
 
+    @pytest.mark.smoke
     def test_single_tone_detection(self):
         """Test that a single-frequency sine wave highlights the correct rational."""
         # Create sine wave at frequency 1/8 (0.125 cycles/sample)

@@ -1,0 +1,134 @@
+# Fast ARCO tests workflow
+# Runs smoke tests on every PR, full tests on main branch or when tagged
+
+name: ARCO Tests
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+env:
+  UV_SYSTEM_PYTHON: true
+
+jobs:
+  arco-smoke-tests:
+    name: ARCO Smoke Tests (Fast)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+
+    - name: Install minimal dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy pytest
+
+    - name: Run ARCO smoke tests
+      run: |
+        # Run fast subset of tests
+        PYTHONPATH=src pytest tests/test_arco.py::TestAnchorGeneration -v
+        PYTHONPATH=src pytest tests/test_arco.py::TestSinePattern::test_single_tone_detection -v
+        PYTHONPATH=src pytest tests/test_arco.py::TestARCOPrint::test_arco_print_shape -v
+        PYTHONPATH=src pytest tests/test_arco.py::TestUtilityFunctions -v
+
+    - name: Display test summary
+      if: always()
+      run: |
+        echo "✓ ARCO smoke tests completed"
+        echo "Run time: ~30 seconds"
+
+  arco-full-tests:
+    name: ARCO Full Test Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Only run on main branch, tags, or if secret is set
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || secrets.RUN_FULL_TESTS == 'true'
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy pytest pytest-cov
+
+    - name: Run full ARCO test suite
+      run: |
+        PYTHONPATH=src pytest tests/test_arco.py -v --cov=src/nomad_auto_xrd/lib --cov-report=term-missing
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.11'
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        flags: arco
+        name: arco-coverage
+        fail_ci_if_error: false
+
+  arco-integration-tests:
+    name: ARCO Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Only run on main or tags
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install full dependencies
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        uv pip install -e '.[dev]'
+
+    - name: Run XRD integration tests
+      run: |
+        PYTHONPATH=src pytest tests/test_arco.py::TestXRDIntegration -v --tb=short
+
+    - name: Validate ARCO implementation
+      run: |
+        PYTHONPATH=src python << 'EOF'
+from nomad_auto_xrd.lib import compute_arco_features, generate_anchors, ARCO
+import numpy as np
+
+# Validation test
+np.random.seed(42)
+two_theta = np.linspace(10, 80, 1024)
+intensity = 100 + 50 * np.sin(2 * np.pi * 0.05 * two_theta) + 10 * np.random.randn(1024)
+
+features = compute_arco_features(two_theta, intensity, Qmax=40, alpha=0.5)
+
+assert 'rci' in features, "Missing RCI"
+assert 0 <= features['rci'] <= 1, f"RCI out of bounds: {features['rci']}"
+assert len(features['arco_print']) > 0, "Empty ARCO-print"
+
+print(f"✓ Validation passed: RCI={features['rci']:.4f}")
+print(f"✓ ARCO-print: {len(features['arco_print'])} features")
+EOF
