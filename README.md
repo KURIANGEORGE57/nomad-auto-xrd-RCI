@@ -1,8 +1,93 @@
 # nomad-auto-xrd
 
-Nomad example template
+A NOMAD plugin for automatic XRD pattern analysis with integrated **ARCO/RCI** (Arcogram with Rational Coherence Index) for advanced periodicity detection and fingerprinting.
 
 This `nomad` plugin was generated with `Cookiecutter` along with `@nomad`'s [`cookiecutter-nomad-plugin`](https://github.com/FAIRmat-NFDI/cookiecutter-nomad-plugin) template.
+
+## Features
+
+- ✅ Automatic XRD phase identification using deep learning models
+- ✅ **ARCO/RCI analysis** for quantifying crystallinity and periodicity
+- ✅ Multi-pattern batch analysis with visualization
+- ✅ Integration with NOMAD data infrastructure
+- ✅ Temporal workflow support for scalable processing
+- ✅ W&B logging for model training
+
+## ARCO/RCI: Novel Periodicity Analysis
+
+This repository implements **ARCO** (Arcogram with Rational Coherence) and **RCI** (Rational Coherence Index), a novel method for analyzing periodic patterns in XRD diffraction profiles.
+
+### What is ARCO/RCI?
+
+ARCO converts 1D XRD intensity profiles into interpretable fingerprints by:
+1. Computing local power spectra using sliding windows
+2. Integrating spectral power around **rational frequency anchors** (Farey sequence)
+3. Producing:
+   - **ARCO-print**: Fixed-length feature vector for ML and similarity search
+   - **RCI**: Scalar index [0,1] quantifying crystallinity/periodicity
+
+### Why Rational Frequencies?
+
+Rational frequencies (e.g., 1/3, 1/7, 1/20) correspond to integer periodicities in:
+- **Regular lattice spacing** → periodic diffraction peaks
+- **Peak spacing relationships** → crystalline order
+- **Long-range structural patterns** → material quality
+
+**Benefits:**
+- **Interpretable**: Each anchor maps to a physical period
+- **Robust**: Resistant to noise and peak jitter (Gaussian weighting)
+- **Compact**: Fixed-length fingerprint (vs. variable-length raw patterns)
+
+### Quick Start with ARCO
+
+```python
+from nomad_auto_xrd.common.arco_rci import ARCO, generate_anchors
+
+# Generate rational anchors (Qmax=40 for XRD)
+anchors = generate_anchors(Qmax=40)
+
+# Initialize analyzer
+arco = ARCO(anchors, window_sizes=[128, 256], alpha=1.0)
+
+# Compute features
+arco_print = arco.compute_arco_print({'intensity': intensity_array})
+rci = arco.compute_rci({'intensity': intensity_array}, major_q=20)
+
+print(f"RCI (crystallinity): {rci:.4f}")  # Higher = more crystalline
+print(f"ARCO-print shape: {arco_print.shape}")  # Feature vector for ML
+```
+
+### RCI Interpretation for XRD
+
+| RCI Range | Interpretation |
+|-----------|----------------|
+| 0.7 - 1.0 | Highly crystalline / ordered |
+| 0.4 - 0.7 | Partially crystalline |
+| 0.2 - 0.4 | Weakly ordered |
+| 0.0 - 0.2 | Amorphous / disordered |
+
+### Documentation
+
+- **Comprehensive Guide**: [`docs/explanation/arco_rci_guide.md`](docs/explanation/arco_rci_guide.md)
+- **XRD Demo Notebook**: [`notebooks/arco_xrd_demo.ipynb`](notebooks/arco_xrd_demo.ipynb)
+- **Sequence Demo Notebook**: [`notebooks/arco_sequence_demo.ipynb`](notebooks/arco_sequence_demo.ipynb)
+- **API Documentation**: See guide for full API reference
+
+### Integration in Analysis Pipeline
+
+ARCO/RCI is automatically computed during XRD analysis:
+
+```python
+from nomad_auto_xrd.common.analysis import XRDAutoAnalyzer
+
+analyzer = XRDAutoAnalyzer(working_directory, settings, enable_arco=True)
+results = analyzer.eval(analysis_inputs)
+
+# Access ARCO features
+for rci, arco_print in zip(results.rci_values, results.arco_prints):
+    print(f"Pattern RCI: {rci:.4f}")
+    # Use arco_print for similarity search, ML, etc.
+```
 
 
 ## Development
