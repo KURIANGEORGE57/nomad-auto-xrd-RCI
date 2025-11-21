@@ -140,6 +140,10 @@ class AnalysisResult:
         xrd_results_m_proxies (list | None): M-proxies for the `data.results`
             section of XRD entries, if available.
         plot_paths (list | None): Paths to the generated plots, if any.
+        arco_prints (list | None): ARCO fingerprint vectors for each pattern, if
+            available.
+        rci_values (list | None): RCI (Rational Coherence Index) values for each
+            pattern, if available.
     """
 
     filenames: list
@@ -151,6 +155,8 @@ class AnalysisResult:
     phases_m_proxies: list[list] | None = None
     xrd_results_m_proxies: list | None = None
     plot_paths: list | None = None
+    arco_prints: list | None = None
+    rci_values: list | None = None
 
     def to_dict(self):
         return {
@@ -171,6 +177,8 @@ class AnalysisResult:
                 else []
             ),
             'plot_paths': self.plot_paths if self.plot_paths is not None else [],
+            'arco_prints': self.arco_prints if self.arco_prints is not None else [],
+            'rci_values': self.rci_values if self.rci_values is not None else [],
         }
 
     @classmethod
@@ -191,6 +199,8 @@ class AnalysisResult:
             if 'xrd_results_m_proxies' in data
             else None,
             plot_paths=list(data['plot_paths']) if 'plot_paths' in data else None,
+            arco_prints=list(data['arco_prints']) if 'arco_prints' in data else None,
+            rci_values=list(data['rci_values']) if 'rci_values' in data else None,
         )
 
     def merge(self, other):
@@ -222,6 +232,16 @@ class AnalysisResult:
             if self.plot_paths is None:
                 self.plot_paths = []
             self.plot_paths.extend(other.plot_paths)
+
+        if other.arco_prints:
+            if self.arco_prints is None:
+                self.arco_prints = []
+            self.arco_prints.extend(other.arco_prints)
+
+        if other.rci_values:
+            if self.rci_values is None:
+                self.rci_values = []
+            self.rci_values.extend(other.rci_values)
 
 
 @dataclass

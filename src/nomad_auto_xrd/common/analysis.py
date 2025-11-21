@@ -17,6 +17,7 @@
 #
 import os
 import shutil
+import sys
 import tempfile
 from typing import TYPE_CHECKING
 
@@ -25,6 +26,8 @@ import tensorflow as tf
 from autoXRD import spectrum_analysis, visualizer
 from nomad_analysis.utils import get_reference
 from tqdm import tqdm
+
+from nomad_auto_xrd.common.arco_rci import ARCO, generate_anchors
 
 from nomad_auto_xrd.common.models import (
     AnalysisInput,
@@ -62,14 +65,16 @@ class XRDAutoAnalyzer:
         working_directory: str,
         analysis_settings: AnalysisSettingsInput,
         logger: 'BoundLogger | None' = None,
+        enable_arco: bool = True,
     ):
         """
         Initializes the XRDAutoAnalyzer.
 
         Args:
             working_directory (str): The directory where the analysis will be performed.
-            data_preprocessor (Callable | None): A function to preprocess the XRD data
-                entries. If None, the default preprocessor will be used.
+            analysis_settings: Analysis settings including model and parameters.
+            logger: Optional logger for logging.
+            enable_arco: Whether to compute ARCO/RCI features (default True).
         """
         self.working_directory = working_directory
         if not os.path.exists(self.working_directory):
@@ -78,12 +83,35 @@ class XRDAutoAnalyzer:
             )
         self.logger = logger
         self.analysis_settings = analysis_settings
+        self.enable_arco = enable_arco
         self.models_dir, self.references_dir, self.spectra_dir = (
             self._create_subdirectories()
         )
         self.xrd_model_path, self.pdf_model_path, self.reference_structure_m_proxies = (
             self._model_setup(analysis_settings.auto_xrd_model)
         )
+
+        # Initialize ARCO analyzer for XRD patterns
+        # Using Qmax=40 for XRD (longer periodicities in diffraction)
+        # Window sizes chosen based on typical XRD pattern resolution
+        if self.enable_arco:
+            try:
+                self.arco_anchors = generate_anchors(Qmax=40)
+                self.arco_analyzer = ARCO(
+                    anchors=self.arco_anchors,
+                    window_sizes=[128, 256],  # Multi-scale for XRD
+                    hop_fraction=0.25,
+                    alpha=1.0,
+                    apply_hann=True,
+                )
+                (self.logger.info if self.logger else timestamped_print)(
+                    f'ARCO initialized with {len(self.arco_anchors)} rational anchors'
+                )
+            except Exception as e:
+                (self.logger.warning if self.logger else timestamped_print)(
+                    f'Failed to initialize ARCO: {e}. ARCO features will be disabled.'
+                )
+                self.enable_arco = False
 
     def _generate_xy_file(
         self,
@@ -176,6 +204,57 @@ class XRDAutoAnalyzer:
 
         return xrd_model_path, pdf_model_path, reference_structure_m_proxies
 
+    def _compute_arco_features(
+        self, intensity: list[float]
+    ) -> tuple[np.ndarray, float]:
+        """
+        Compute ARCO fingerprint and RCI for an intensity profile.
+
+        Args:
+            intensity: XRD intensity profile
+
+        Returns:
+            Tuple of (arco_print, rci_value)
+        """
+        if not self.enable_arco:
+            return None, None
+
+        try:
+            # Convert intensity to numpy array and normalize
+            intensity_array = np.array(intensity, dtype=np.float64)
+
+            # Resample to uniform grid if needed (for consistent window sizes)
+            # Target length should be large enough for the window sizes
+            target_length = max(512, len(intensity_array))
+            if len(intensity_array) < target_length:
+                # Interpolate to target length
+                x_old = np.linspace(0, 1, len(intensity_array))
+                x_new = np.linspace(0, 1, target_length)
+                intensity_array = np.interp(x_new, x_old, intensity_array)
+            elif len(intensity_array) > target_length:
+                # Downsample to target length
+                indices = np.linspace(0, len(intensity_array) - 1, target_length).astype(
+                    int
+                )
+                intensity_array = intensity_array[indices]
+
+            # Create tracks dictionary (using single intensity track for XRD)
+            tracks = {'intensity': intensity_array}
+
+            # Compute ARCO-print
+            arco_print = self.arco_analyzer.compute_arco_print(tracks)
+
+            # Compute RCI (using major_q=20 for XRD patterns)
+            rci_value = self.arco_analyzer.compute_rci(tracks, major_q=20)
+
+            return arco_print, rci_value
+
+        except Exception as e:
+            (self.logger.warning if self.logger else timestamped_print)(
+                f'Error computing ARCO features: {e}'
+            )
+            return None, None
+
     def eval(  # noqa: PLR0912
         self, analysis_inputs: list[AnalysisInput]
     ) -> AnalysisResult:
@@ -205,12 +284,19 @@ class XRDAutoAnalyzer:
             phases_m_proxies=[],
             xrd_results_m_proxies=[],
             plot_paths=[],
+            arco_prints=[],
+            rci_values=[],
         )
         original_dir = os.getcwd()
         os.chdir(self.working_directory)
         pbar = tqdm(analysis_inputs, desc='Running analysis')
         for idx, analysis_input in enumerate(pbar):
             try:
+                # Compute ARCO features for the input pattern
+                arco_print, rci_value = self._compute_arco_features(
+                    analysis_input.intensity
+                )
+
                 spectrum_xy_file = f'spectrum_{idx}.xy'
                 self._generate_xy_file(
                     os.path.join('Spectra', spectrum_xy_file),
@@ -277,10 +363,17 @@ class XRDAutoAnalyzer:
                 merged_results.phases_m_proxies = [phases_m_proxies]
 
                 # add measurement_m_proxy to the results
-
                 merged_results.xrd_results_m_proxies = [
                     analysis_input.measurement_m_proxy
                 ]
+
+                # Add ARCO features to the results
+                if arco_print is not None:
+                    merged_results.arco_prints = [arco_print.tolist()]
+                    merged_results.rci_values = [float(rci_value)]
+                else:
+                    merged_results.arco_prints = [None]
+                    merged_results.rci_values = [None]
 
                 # plot the identified phases and add plot paths to the results
                 visualizer.main(
