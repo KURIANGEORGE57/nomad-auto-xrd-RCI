@@ -1,0 +1,1213 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Nomad example template">
+      
+      
+        <meta name="author" content="Pepe Márquez">
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-8.1.1">
+    
+    
+      
+        <title>ARCO/RCI User Guide - nomad-auto-xrd</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.23b6d78a.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font:"Titillium Web";--md-code-font:""}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#2a4cdf" data-md-color-accent="#008a67">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arcorci-user-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://nomad-lab.eu" title="nomad-auto-xrd" class="md-header__button md-logo" aria-label="nomad-auto-xrd" data-md-component="logo">
+      
+  <img src="../assets/nomad-plugin-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            nomad-auto-xrd
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ARCO/RCI User Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/foo/nomad-auto-xrd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://nomad-lab.eu" title="nomad-auto-xrd" class="md-nav__button md-logo" aria-label="nomad-auto-xrd" data-md-component="logo">
+      
+  <img src="../assets/nomad-plugin-logo.png" alt="logo">
+
+    </a>
+    nomad-auto-xrd
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/foo/nomad-auto-xrd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tutorial.html" class="md-nav__link">
+        Tutorial
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          How-to guides
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="How-to guides" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          How-to guides
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to/install_this_plugin.html" class="md-nav__link">
+        Install this Plugin
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to/use_this_plugin.html" class="md-nav__link">
+        Use this Plugin
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to/contribute_to_this_plugin.html" class="md-nav__link">
+        Contribute to this plugin
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to/contribute_to_the_documentation.html" class="md-nav__link">
+        Contribute to the documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="explanation.html" class="md-nav__link">
+        Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/references.html" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concept" class="md-nav__link">
+    Core Concept
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-rational-anchors" class="md-nav__link">
+    Why Rational Anchors?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-setup" class="md-nav__link">
+    Installation &amp; Setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation &amp; Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import" class="md-nav__link">
+    Import
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    Quick Start
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-generate-rational-anchors" class="md-nav__link">
+    1. Generate Rational Anchors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-initialize-arco-analyzer" class="md-nav__link">
+    2. Initialize ARCO Analyzer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-compute-features" class="md-nav__link">
+    3. Compute Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    API Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_anchorsqmax-int-listfloat" class="md-nav__link">
+    generate_anchors(Qmax: int) -&gt; List[float]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-arco" class="md-nav__link">
+    class ARCO
+  </a>
+  
+    <nav class="md-nav" aria-label="class ARCO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#__init__anchors-window_sizes-hop_fraction-alpha-apply_hann-track_names" class="md-nav__link">
+    __init__(anchors, window_sizes, hop_fraction, alpha, apply_hann, track_names)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_arco_printtracks-dictstr-npndarray-npndarray" class="md-nav__link">
+    compute_arco_print(tracks: Dict[str, np.ndarray]) -&gt; np.ndarray
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_rcitracks-dictstr-npndarray-major_q-int-11-float" class="md-nav__link">
+    compute_rci(tracks: Dict[str, np.ndarray], major_q: int = 11) -&gt; float
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_arco_3dtracks-finest_window-npndarray" class="md-nav__link">
+    compute_arco_3d(tracks, finest_window) -&gt; np.ndarray
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null_model_zscoretrack-n_shuffles-preserve_composition-tuplefloat-float" class="md-nav__link">
+    null_model_zscore(track, n_shuffles, preserve_composition) -&gt; Tuple[float, float]
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-guidelines" class="md-nav__link">
+    Parameter Guidelines
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameter Guidelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-specific-recommendations" class="md-nav__link">
+    Domain-Specific Recommendations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-effects" class="md-nav__link">
+    Parameter Effects
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameter Effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qmax-anchor-density" class="md-nav__link">
+    Qmax (Anchor Density)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alpha-bandwidth-scaling" class="md-nav__link">
+    alpha (Bandwidth Scaling)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#window_sizes-multi-scale" class="md-nav__link">
+    window_sizes (Multi-scale)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#major_q-rci-threshold" class="md-nav__link">
+    major_q (RCI Threshold)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interpretation-guide" class="md-nav__link">
+    Interpretation Guide
+  </a>
+  
+    <nav class="md-nav" aria-label="Interpretation Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-rational-anchors" class="md-nav__link">
+    Common Rational Anchors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rci-interpretation-for-xrd" class="md-nav__link">
+    RCI Interpretation for XRD
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-with-xrd-analysis" class="md-nav__link">
+    Integration with XRD Analysis
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration with XRD Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-arco-features" class="md-nav__link">
+    Accessing ARCO Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    Use Cases
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage" class="md-nav__link">
+    Advanced Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-track-analysis" class="md-nav__link">
+    Multi-Track Analysis
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arco-3d-visualization" class="md-nav__link">
+    ARCO-3D Visualization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statistical-validation" class="md-nav__link">
+    Statistical Validation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-considerations" class="md-nav__link">
+    Performance Considerations
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#computational-cost" class="md-nav__link">
+    Computational Cost
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimization-tips" class="md-nav__link">
+    Optimization Tips
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typical-performance" class="md-nav__link">
+    Typical Performance
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issue-rci-is-always-low" class="md-nav__link">
+    Issue: RCI is always low
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-arco-print-has-nan-values" class="md-nav__link">
+    Issue: ARCO-print has NaN values
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-computation-is-slow" class="md-nav__link">
+    Issue: Computation is slow
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    Citation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="arcorci-user-guide">ARCO/RCI User Guide<a class="headerlink" href="#arcorci-user-guide" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p><strong>ARCO</strong> (Arcogram with Rational Coherence) and <strong>RCI</strong> (Rational Coherence Index) are novel signal processing methods for analyzing periodic patterns in 1D signals, particularly X-ray diffraction (XRD) intensity profiles.</p>
+<h3 id="core-concept">Core Concept<a class="headerlink" href="#core-concept" title="Permanent link">&para;</a></h3>
+<p>ARCO converts 1D signals into fixed-length, interpretable fingerprints by:
+1. Computing local power spectra (STFT-style sliding windows with Hann tapering)
+2. Integrating spectral power around <strong>rational-frequency anchors</strong> (Farey/Diophantine set) rather than arbitrary linear bins
+3. Producing:
+   - <strong>ARCO-print</strong>: Fixed-length feature vector for ML/similarity search
+   - <strong>RCI</strong>: Scalar index [0,1] measuring fraction of energy on major rationals
+   - <strong>ARCO-3D</strong>: Position-resolved arcogram for localization</p>
+<h3 id="why-rational-anchors">Why Rational Anchors?<a class="headerlink" href="#why-rational-anchors" title="Permanent link">&para;</a></h3>
+<p>Low-denominator rationals (e.g., 1/3, 1/7, 1/20) correspond to small-integer periodicities seen in:
+- <strong>XRD patterns</strong>: Regular lattice spacing → periodic peak positions
+- <strong>Biological sequences</strong>: Heptad repeats (coiled-coils), α-helix (3.6 residues/turn)
+- <strong>ECG signals</strong>: Beat harmonics and rhythm patterns</p>
+<p>Aggregating energy at these rationals provides:
+- <strong>Semantic meaning</strong>: Each anchor corresponds to a physical period
+- <strong>Robustness</strong>: Resistant to frequency jitter and noise (Gaussian weighting)
+- <strong>Interpretability</strong>: Direct mapping from features to periodicities</p>
+<hr />
+<h2 id="installation-setup">Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Permanent link">&para;</a></h2>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">numpy</span><span class="o">&gt;=</span><span class="mf">1.20</span>
+</code></pre></div>
+<h3 id="import">Import<a class="headerlink" href="#import" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">nomad_auto_xrd.common.arco_rci</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARCO</span><span class="p">,</span> <span class="n">generate_anchors</span><span class="p">,</span> <span class="n">get_anchor_interpretation_table</span>
+</code></pre></div>
+<hr />
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<h3 id="1-generate-rational-anchors">1. Generate Rational Anchors<a class="headerlink" href="#1-generate-rational-anchors" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># For XRD: use Qmax=40 (longer periodicities)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">anchors</span> <span class="o">=</span> <span class="n">generate_anchors</span><span class="p">(</span><span class="n">Qmax</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">anchors</span><span class="p">)</span><span class="si">}</span><span class="s2"> anchors&quot;</span><span class="p">)</span>  <span class="c1"># ~174 anchors</span>
+</code></pre></div>
+<h3 id="2-initialize-arco-analyzer">2. Initialize ARCO Analyzer<a class="headerlink" href="#2-initialize-arco-analyzer" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">arco</span> <span class="o">=</span> <span class="n">ARCO</span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">anchors</span><span class="o">=</span><span class="n">anchors</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">window_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">],</span>  <span class="c1"># Multi-scale analysis</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">hop_fraction</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>        <span class="c1"># 75% overlap</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>                <span class="c1"># Bandwidth = alpha / q^2</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">apply_hann</span><span class="o">=</span><span class="kc">True</span>           <span class="c1"># Hann window tapering</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="3-compute-features">3. Compute Features<a class="headerlink" href="#3-compute-features" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Single-track analysis (XRD intensity)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">intensity</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="c1"># your XRD intensity array</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># ARCO-print: fixed-length fingerprint</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">arco_print</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_arco_print</span><span class="p">({</span><span class="s1">&#39;intensity&#39;</span><span class="p">:</span> <span class="n">intensity</span><span class="p">})</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># RCI: rational coherence index [0, 1]</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">rci</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_rci</span><span class="p">({</span><span class="s1">&#39;intensity&#39;</span><span class="p">:</span> <span class="n">intensity</span><span class="p">},</span> <span class="n">major_q</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ARCO-print shape: </span><span class="si">{</span><span class="n">arco_print</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (n_anchors * n_window_sizes,)</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RCI: </span><span class="si">{</span><span class="n">rci</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Higher = more periodic</span>
+</code></pre></div>
+<hr />
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="generate_anchorsqmax-int-listfloat"><code>generate_anchors(Qmax: int) -&gt; List[float]</code><a class="headerlink" href="#generate_anchorsqmax-int-listfloat" title="Permanent link">&para;</a></h3>
+<p>Generate Farey sequence of rational frequencies.</p>
+<p><strong>Parameters:</strong>
+- <code>Qmax</code>: Maximum denominator (e.g., 11 for sequences, 40 for XRD)</p>
+<p><strong>Returns:</strong>
+- List of rational anchor frequencies in (0, 0.5)</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">anchors</span> <span class="o">=</span> <span class="n">generate_anchors</span><span class="p">(</span><span class="n">Qmax</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Returns: [1/20, 1/19, ..., 9/19, 9/20]</span>
+</code></pre></div></p>
+<hr />
+<h3 id="class-arco"><code>class ARCO</code><a class="headerlink" href="#class-arco" title="Permanent link">&para;</a></h3>
+<p>Main analyzer class for ARCO/RCI computation.</p>
+<h4 id="__init__anchors-window_sizes-hop_fraction-alpha-apply_hann-track_names"><code>__init__(anchors, window_sizes, hop_fraction, alpha, apply_hann, track_names)</code><a class="headerlink" href="#__init__anchors-window_sizes-hop_fraction-alpha-apply_hann-track_names" title="Permanent link">&para;</a></h4>
+<p><strong>Parameters:</strong>
+- <code>anchors</code> <em>(List[float])</em>: Rational frequency anchors from <code>generate_anchors()</code>
+- <code>window_sizes</code> <em>(List[int])</em>: Window sizes for multi-scale analysis (default: [31, 63])
+- <code>hop_fraction</code> <em>(float)</em>: Hop as fraction of window size (default: 0.25)
+- <code>alpha</code> <em>(float)</em>: Bandwidth scaling factor, δ = α/q² (default: 1.0)
+- <code>apply_hann</code> <em>(bool)</em>: Apply Hann window tapering (default: True)
+- <code>track_names</code> <em>(List[str], optional)</em>: Names for multi-track analysis</p>
+<h4 id="compute_arco_printtracks-dictstr-npndarray-npndarray"><code>compute_arco_print(tracks: Dict[str, np.ndarray]) -&gt; np.ndarray</code><a class="headerlink" href="#compute_arco_printtracks-dictstr-npndarray-npndarray" title="Permanent link">&para;</a></h4>
+<p>Compute ARCO-print: fixed-length fingerprint vector.</p>
+<p><strong>Parameters:</strong>
+- <code>tracks</code>: Dictionary mapping track names to 1D signal arrays</p>
+<p><strong>Returns:</strong>
+- 1D array of shape <code>(n_tracks * n_anchors * n_window_sizes,)</code></p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">tracks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;intensity&#39;</span><span class="p">:</span> <span class="n">intensity_array</span><span class="p">}</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">arco_print</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_arco_print</span><span class="p">(</span><span class="n">tracks</span><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="compute_rcitracks-dictstr-npndarray-major_q-int-11-float"><code>compute_rci(tracks: Dict[str, np.ndarray], major_q: int = 11) -&gt; float</code><a class="headerlink" href="#compute_rcitracks-dictstr-npndarray-major_q-int-11-float" title="Permanent link">&para;</a></h4>
+<p>Compute Rational Coherence Index (RCI).</p>
+<p><strong>Parameters:</strong>
+- <code>tracks</code>: Dictionary of signal arrays
+- <code>major_q</code>: Max denominator for "major" rational arcs (default: 11)</p>
+<p><strong>Returns:</strong>
+- RCI value in [0, 1]</p>
+<p><strong>Interpretation:</strong>
+- <strong>High RCI (&gt;0.5)</strong>: Strong periodicity
+- <strong>Medium RCI (0.2-0.5)</strong>: Moderate periodicity
+- <strong>Low RCI (&lt;0.2)</strong>: Weak/no periodicity</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">rci</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_rci</span><span class="p">({</span><span class="s1">&#39;intensity&#39;</span><span class="p">:</span> <span class="n">intensity</span><span class="p">},</span> <span class="n">major_q</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="compute_arco_3dtracks-finest_window-npndarray"><code>compute_arco_3d(tracks, finest_window) -&gt; np.ndarray</code><a class="headerlink" href="#compute_arco_3dtracks-finest_window-npndarray" title="Permanent link">&para;</a></h4>
+<p>Compute position-resolved ARCO (ARCO-3D).</p>
+<p><strong>Parameters:</strong>
+- <code>tracks</code>: Dictionary of signal arrays
+- <code>finest_window</code>: Window size for position resolution</p>
+<p><strong>Returns:</strong>
+- 3D array of shape <code>(n_tracks, n_windows, n_anchors)</code></p>
+<p><strong>Use case:</strong> Visualize how periodicity varies across the signal</p>
+<h4 id="null_model_zscoretrack-n_shuffles-preserve_composition-tuplefloat-float"><code>null_model_zscore(track, n_shuffles, preserve_composition) -&gt; Tuple[float, float]</code><a class="headerlink" href="#null_model_zscoretrack-n_shuffles-preserve_composition-tuplefloat-float" title="Permanent link">&para;</a></h4>
+<p>Compute z-score vs shuffled null distribution.</p>
+<p><strong>Parameters:</strong>
+- <code>track</code>: 1D signal array
+- <code>n_shuffles</code>: Number of shuffles (default: 50)
+- <code>preserve_composition</code>: Preserve value histogram (default: True)</p>
+<p><strong>Returns:</strong>
+- <code>(z_score, p_value)</code></p>
+<p><strong>Interpretation:</strong>
+- <strong>z &gt; 2</strong>: Significant periodicity (p &lt; 0.05)
+- <strong>z &lt; 2</strong>: Not significantly different from random</p>
+<hr />
+<h2 id="parameter-guidelines">Parameter Guidelines<a class="headerlink" href="#parameter-guidelines" title="Permanent link">&para;</a></h2>
+<h3 id="domain-specific-recommendations">Domain-Specific Recommendations<a class="headerlink" href="#domain-specific-recommendations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Qmax</th>
+<th>Window Sizes</th>
+<th>Alpha</th>
+<th>Major_q</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>XRD patterns</strong></td>
+<td>40-60</td>
+<td>[128, 256]</td>
+<td>1.0-2.0</td>
+<td>20</td>
+</tr>
+<tr>
+<td><strong>Protein sequences</strong></td>
+<td>11-20</td>
+<td>[31, 63]</td>
+<td>1.0</td>
+<td>11</td>
+</tr>
+<tr>
+<td><strong>ECG signals</strong></td>
+<td>30</td>
+<td>[500, 1000]*</td>
+<td>1.0-2.0</td>
+<td>20</td>
+</tr>
+<tr>
+<td><strong>General</strong></td>
+<td>20</td>
+<td>[32, 64, 128]</td>
+<td>1.0</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p>* For ECG at 250-500 Hz sampling</p>
+<h3 id="parameter-effects">Parameter Effects<a class="headerlink" href="#parameter-effects" title="Permanent link">&para;</a></h3>
+<h4 id="qmax-anchor-density"><code>Qmax</code> (Anchor Density)<a class="headerlink" href="#qmax-anchor-density" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Low (11)</strong>: Fewer anchors, captures only strong low-period patterns</li>
+<li><strong>Medium (20)</strong>: Balanced for most applications</li>
+<li><strong>High (40-60)</strong>: Dense sampling, captures longer periodicities (XRD)</li>
+</ul>
+<h4 id="alpha-bandwidth-scaling"><code>alpha</code> (Bandwidth Scaling)<a class="headerlink" href="#alpha-bandwidth-scaling" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Low (0.5)</strong>: Narrow bands, high frequency resolution, requires strong signal</li>
+<li><strong>Medium (1.0)</strong>: Recommended default</li>
+<li><strong>High (2.0)</strong>: Wide bands, more robust to noise but lower resolution</li>
+</ul>
+<h4 id="window_sizes-multi-scale"><code>window_sizes</code> (Multi-scale)<a class="headerlink" href="#window_sizes-multi-scale" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Small windows: Capture short-period variations</li>
+<li>Large windows: Capture long-period trends</li>
+<li>Multiple sizes: Robustness across scales</li>
+</ul>
+<h4 id="major_q-rci-threshold"><code>major_q</code> (RCI Threshold)<a class="headerlink" href="#major_q-rci-threshold" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Determines which rationals count as "major" for RCI</li>
+<li><strong>XRD</strong>: Use 20 (longer periods matter)</li>
+<li><strong>Sequences</strong>: Use 11 (biological repeats 3-11)</li>
+</ul>
+<hr />
+<h2 id="interpretation-guide">Interpretation Guide<a class="headerlink" href="#interpretation-guide" title="Permanent link">&para;</a></h2>
+<h3 id="common-rational-anchors">Common Rational Anchors<a class="headerlink" href="#common-rational-anchors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rational</th>
+<th>Frequency</th>
+<th>Period</th>
+<th>Typical Meaning (XRD)</th>
+<th>Typical Meaning (Bio)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1/2</td>
+<td>0.500</td>
+<td>2</td>
+<td>Alternating peaks</td>
+<td>β-strand</td>
+</tr>
+<tr>
+<td>1/3</td>
+<td>0.333</td>
+<td>3</td>
+<td>Triplet spacing</td>
+<td>Collagen (Gly-X-Y)</td>
+</tr>
+<tr>
+<td>1/7</td>
+<td>0.143</td>
+<td>7</td>
+<td>-</td>
+<td>Heptad (coiled-coil)</td>
+</tr>
+<tr>
+<td>1/10</td>
+<td>0.100</td>
+<td>10</td>
+<td>Decagonal</td>
+<td>-</td>
+</tr>
+<tr>
+<td>1/20</td>
+<td>0.050</td>
+<td>20</td>
+<td>Long-range order</td>
+<td>-</td>
+</tr>
+<tr>
+<td>5/18</td>
+<td>0.278</td>
+<td>~3.6</td>
+<td>-</td>
+<td>α-helix pitch</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rci-interpretation-for-xrd">RCI Interpretation for XRD<a class="headerlink" href="#rci-interpretation-for-xrd" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">if</span> <span class="n">rci</span> <span class="o">&gt;</span> <span class="mf">0.7</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Highly crystalline / ordered&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">elif</span> <span class="n">rci</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Partially crystalline&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">elif</span> <span class="n">rci</span> <span class="o">&gt;</span> <span class="mf">0.2</span><span class="p">:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Weakly ordered&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Amorphous / disordered&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="integration-with-xrd-analysis">Integration with XRD Analysis<a class="headerlink" href="#integration-with-xrd-analysis" title="Permanent link">&para;</a></h2>
+<p>ARCO/RCI is automatically computed in the XRD analysis pipeline when <code>enable_arco=True</code> (default).</p>
+<h3 id="accessing-arco-features">Accessing ARCO Features<a class="headerlink" href="#accessing-arco-features" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">nomad_auto_xrd.common.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">XRDAutoAnalyzer</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">analyzer</span> <span class="o">=</span> <span class="n">XRDAutoAnalyzer</span><span class="p">(</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">working_directory</span><span class="o">=</span><span class="s1">&#39;/path/to/work&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">analysis_settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">enable_arco</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Default</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="p">)</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="n">results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">analysis_inputs</span><span class="p">)</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="c1"># Access ARCO features</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="k">for</span> <span class="n">arco_print</span><span class="p">,</span> <span class="n">rci</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">arco_prints</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">rci_values</span><span class="p">):</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RCI: </span><span class="si">{</span><span class="n">rci</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ARCO-print length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">arco_print</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Similarity Search</strong>: Use <code>arco_print</code> as feature vector in FAISS/vector DB</li>
+<li><strong>Crystallinity Quantification</strong>: Use <code>rci</code> as crystallinity metric</li>
+<li><strong>Phase Classification</strong>: Train ML model on <code>arco_print</code> features</li>
+<li><strong>Quality Control</strong>: Flag patterns with anomalous RCI values</li>
+<li><strong>Evolutionary Optimization</strong>: Add RCI as constraint/objective in EvolvMorph</li>
+</ol>
+<hr />
+<h2 id="advanced-usage">Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permanent link">&para;</a></h2>
+<h3 id="multi-track-analysis">Multi-Track Analysis<a class="headerlink" href="#multi-track-analysis" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Example: Intensity + Derivative</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">...</span><span class="p">])</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">derivative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">tracks</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="s1">&#39;intensity&#39;</span><span class="p">:</span> <span class="n">intensity</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="s1">&#39;derivative&#39;</span><span class="p">:</span> <span class="n">derivative</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="p">}</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="n">arco_print</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_arco_print</span><span class="p">(</span><span class="n">tracks</span><span class="p">)</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">rci</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_rci</span><span class="p">(</span><span class="n">tracks</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="arco-3d-visualization">ARCO-3D Visualization<a class="headerlink" href="#arco-3d-visualization" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">arco_3d</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">compute_arco_3d</span><span class="p">({</span><span class="s1">&#39;intensity&#39;</span><span class="p">:</span> <span class="n">intensity</span><span class="p">},</span> <span class="n">finest_window</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">arco_3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Window Position&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Rational Anchor&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ARCO-3D: Position-Resolved Periodicity&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Arc Power&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="statistical-validation">Statistical Validation<a class="headerlink" href="#statistical-validation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">z_score</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">arco</span><span class="o">.</span><span class="n">null_model_zscore</span><span class="p">(</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">intensity</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">n_shuffles</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">preserve_composition</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">if</span> <span class="n">z_score</span> <span class="o">&gt;</span> <span class="mf">2.0</span><span class="p">:</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Significant periodicity detected (z=</span><span class="si">{</span><span class="n">z_score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, p=</span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No significant periodicity (z=</span><span class="si">{</span><span class="n">z_score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="performance-considerations">Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="computational-cost">Computational Cost<a class="headerlink" href="#computational-cost" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>FFT per window</strong>: O(W log W)</li>
+<li><strong>Total for signal length N</strong>: O((N/H) * W log W) where H = hop size</li>
+<li><strong>Memory</strong>: ARCO-print is ~100-500 floats (tiny compared to raw signal)</li>
+</ul>
+<h3 id="optimization-tips">Optimization Tips<a class="headerlink" href="#optimization-tips" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Use larger hop</strong> (<code>hop_fraction=0.5</code>) for faster computation (less overlap)</li>
+<li><strong>Limit window sizes</strong> to 1-2 scales if speed is critical</li>
+<li><strong>Precompute anchors</strong> once and reuse across signals</li>
+<li><strong>Batch processing</strong>: Process multiple patterns in parallel</li>
+</ol>
+<h3 id="typical-performance">Typical Performance<a class="headerlink" href="#typical-performance" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Single XRD pattern</strong> (2048 points): ~50-100ms</li>
+<li><strong>100 patterns</strong>: ~5-10 seconds</li>
+<li><strong>Memory per pattern</strong>: &lt;1 MB</li>
+</ul>
+<hr />
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>See the notebooks directory for complete examples:
+- <code>notebooks/arco_xrd_demo.ipynb</code>: XRD pattern analysis
+- <code>notebooks/arco_sequence_demo.ipynb</code>: Protein sequence analysis</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="issue-rci-is-always-low">Issue: RCI is always low<a class="headerlink" href="#issue-rci-is-always-low" title="Permanent link">&para;</a></h3>
+<p><strong>Solution:</strong>
+- Check signal length: Should be at least 2× largest window size
+- Verify signal has actual periodicity (visual inspection)
+- Try increasing <code>alpha</code> for more bandwidth
+- Check if signal needs resampling to uniform grid</p>
+<h3 id="issue-arco-print-has-nan-values">Issue: ARCO-print has NaN values<a class="headerlink" href="#issue-arco-print-has-nan-values" title="Permanent link">&para;</a></h3>
+<p><strong>Solution:</strong>
+- Signal may have constant regions (zero std)
+- Add small noise: <code>signal += 1e-6 * np.random.randn(len(signal))</code>
+- Check for invalid values (inf, nan) in input</p>
+<h3 id="issue-computation-is-slow">Issue: Computation is slow<a class="headerlink" href="#issue-computation-is-slow" title="Permanent link">&para;</a></h3>
+<p><strong>Solution:</strong>
+- Reduce <code>Qmax</code> (fewer anchors)
+- Increase <code>hop_fraction</code> (less overlap)
+- Use fewer/smaller window sizes</p>
+<hr />
+<h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">&para;</a></h2>
+<p>If you use ARCO/RCI in your research, please cite:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nc">@software</span><span class="p">{</span><span class="nl">nomad_auto_xrd_rci</span><span class="p">,</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="na">title</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{NOMAD Auto-XRD with ARCO/RCI}</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="na">author</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{FAIRmat Consortium}</span><span class="p">,</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="na">year</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{2025}</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="na">url</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{https://github.com/FAIRmat-NFDI/nomad-auto-xrd}</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Farey sequence: Mathematical foundation for rational frequency sampling</li>
+<li>STFT: Short-Time Fourier Transform for windowed spectral analysis</li>
+<li>Diophantine approximation: Theory of rational approximations to real numbers</li>
+</ul>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant"], "search": "../assets/javascripts/workers/search.c7dec7e7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.da79ceb7.min.js"></script>
+      
+        <script src="../javascript.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
